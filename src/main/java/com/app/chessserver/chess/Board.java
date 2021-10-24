@@ -10,21 +10,23 @@ import java.util.stream.Stream;
 
 public class Board {
 
-    private long whiteKings = 0;
-    private long whiteQueens = 0;
-    private long whiteRooks = 0;
-    private long whiteBishops = 0;
-    private long whiteKnights = 0;
-    private long whitePawns = 0;
-    private long whitePieces = 0;
+    private long whiteKings;
+    private long whiteQueens;
+    private long whiteRooks;
+    private long whiteBishops;
+    private long whiteKnights;
+    private long whitePawns;
+    private long whitePieces;
 
-    private long blackKings = 0;
-    private long blackQueens = 0;
-    private long blackRooks = 0;
-    private long blackBishops = 0;
-    private long blackKnights = 0;
-    private long blackPawns = 0;
-    private long blackPieces = 0;
+    private long blackKings;
+    private long blackQueens;
+    private long blackRooks;
+    private long blackBishops;
+    private long blackKnights;
+    private long blackPawns;
+    private long blackPieces;
+
+    private long allPieces;
 
     public Board() {
         resetBoard();
@@ -43,7 +45,6 @@ public class Board {
         whiteBishops = 1L << Positions.C1 | 1L << Positions.F1;
         whiteKnights = 1L << Positions.B1 | 1L << Positions.G1;
         whitePawns = 255L << 8;
-        whitePieces = whiteKings | whiteQueens | whiteRooks | whiteBishops | whiteKnights | whitePawns;
 
         blackKings = 1L << Positions.E8;
         blackQueens = 1L << Positions.D8;
@@ -51,11 +52,19 @@ public class Board {
         blackBishops = 1L << Positions.C8 | 1L << Positions.F8;
         blackKnights = 1L << Positions.B8 | 1L << Positions.G8;
         blackPawns = 255L << 48;
+
+        updatePieces();
+    }
+
+    private void updatePieces() {
+        whitePieces = whiteKings | whiteQueens | whiteRooks | whiteBishops | whiteKnights | whitePawns;
         blackPieces = blackKings | blackQueens | blackRooks | blackBishops | blackKnights | blackPawns;
+        allPieces = whitePieces | blackPieces;
     }
 
     public void movePiece(final MovePiece movePiece) throws Exception {
         System.out.println("Moving the piece: " + movePiece);
+
         printBoard();
     }
 
