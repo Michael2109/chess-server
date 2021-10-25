@@ -32,10 +32,8 @@ public class Board {
         resetBoard();
     }
 
-    private static <T> List<List<T>> getBatches(List<T> collection, int batchSize) {
-        return IntStream.iterate(0, i -> i < collection.size(), i -> i + batchSize)
-                .mapToObj(i -> collection.subList(i, Math.min(i + batchSize, collection.size())))
-                .collect(Collectors.toList());
+    public long getBitboard(){
+        return allPieces;
     }
 
     private void resetBoard() {
@@ -65,25 +63,11 @@ public class Board {
     public void movePiece(final MovePiece movePiece) throws Exception {
         System.out.println("Moving the piece: " + movePiece);
 
-        printBoard();
+        BitboardUtils.printBitboard(allPieces);
     }
 
     public Collection<Position> getValidMoves(final Position position) {
         return Stream.of(new Position(1, 5)).collect(Collectors.toList());
     }
 
-    public void printBoard() {
-        final String binary = String.format("%64s", Long.toBinaryString(whitePieces | blackPieces)).replace(' ', '0');
-
-        final List<Character> chars = binary.chars().mapToObj(e -> (char) e).collect(Collectors.toList());
-
-        final List<List<Character>> rows = getBatches(chars, 8);
-
-        rows.stream().forEach(row -> {
-            final StringBuilder sb = new StringBuilder();
-            row.forEach(character -> sb.append(character));
-
-            System.out.println(sb);
-        });
-    }
 }
