@@ -35,6 +35,6 @@ public class ChessController {
     @SendTo("/topic/validMoves")
     @CrossOrigin(origins = "http://localhost:3000")
     public Collection<Position> getValidMoves(final Position position) throws Exception {
-        return chessBoard.getValidMoves(position);
+        return null;
     }
 }

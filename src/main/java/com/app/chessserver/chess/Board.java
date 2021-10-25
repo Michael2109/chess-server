@@ -10,21 +10,21 @@ import java.util.stream.Stream;
 
 public class Board {
 
-    private long whiteKings;
-    private long whiteQueens;
-    private long whiteRooks;
-    private long whiteBishops;
-    private long whiteKnights;
-    private long whitePawns;
-    private long whitePieces;
+    public long whiteKings;
+    public long whiteQueens;
+    public long whiteRooks;
+    public long whiteBishops;
+    public long whiteKnights;
+    public long whitePawns;
+    public long whitePieces;
 
-    private long blackKings;
-    private long blackQueens;
-    private long blackRooks;
-    private long blackBishops;
-    private long blackKnights;
-    private long blackPawns;
-    private long blackPieces;
+    public long blackKings;
+    public long blackQueens;
+    public long blackRooks;
+    public long blackBishops;
+    public long blackKnights;
+    public long blackPawns;
+    public long blackPieces;
 
     private long allPieces;
 
@@ -64,10 +64,6 @@ public class Board {
         System.out.println("Moving the piece: " + movePiece);
 
         BitboardUtils.printBitboard(allPieces);
-    }
-
-    public Collection<Position> getValidMoves(final Position position) {
-        return Stream.of(new Position(1, 5)).collect(Collectors.toList());
     }
 
 }
