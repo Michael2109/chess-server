@@ -15,11 +15,11 @@ public class BitboardUtils {
     }
 
     public static long createFileClear(final int column) {
-        return 0b1111111111111111111111111111111111111111111111111111111111111111L << (column * 8);
+        return ~ (0b0000000100000001000000010000000100000001000000010000000100000001L << column);
     }
 
     public static long createFileMask(final int column) {
-        return 0b111111111111111111111111111111111111111111111111111111111L << (column * 8);
+        return 0b0000000100000001000000010000000100000001000000010000000100000001L << column;
     }
 
     public static void printBitboard(final long bitboard) {

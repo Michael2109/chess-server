@@ -28,9 +28,26 @@ public class BitboardTest {
         final long bitboard = new Board().getBitboard();
 
         Assertions.assertEquals(0b0000000000000000000000000000000000000000000000000000000011111111L, bitboard & BitboardUtils.createRankMask(0));
-
         Assertions.assertEquals(0b0000000000000000000000000000000000000000000000001111111100000000L, bitboard & BitboardUtils.createRankMask(1));
-
         Assertions.assertEquals(0b1111111100000000000000000000000000000000000000000000000000000000L, bitboard & BitboardUtils.createRankMask(7));
+    }
+
+    @Test
+    public void testClearFile() {
+        final long bitboard = new Board().getBitboard();
+
+        Assertions.assertEquals(0b1111111011111110000000000000000000000000000000001111111011111110L, bitboard & BitboardUtils.createFileClear(0));
+        Assertions.assertEquals(0b1111110111111101000000000000000000000000000000001111110111111101L, bitboard & BitboardUtils.createFileClear(1));
+        Assertions.assertEquals(0b0111111101111111000000000000000000000000000000000111111101111111L, bitboard & BitboardUtils.createFileClear(7));
+    }
+
+    @Test
+    public void testMaskFile() {
+        final long bitboard = new Board().getBitboard();
+
+       BitboardUtils.printBitboard(bitboard & BitboardUtils.createFileMask(7));
+        Assertions.assertEquals(0b0000000100000001000000000000000000000000000000000000000100000001L, bitboard & BitboardUtils.createFileMask(0));
+        Assertions.assertEquals(0b0000001000000010000000000000000000000000000000000000001000000010L, bitboard & BitboardUtils.createFileMask(1));
+        Assertions.assertEquals(0b1000000010000000000000000000000000000000000000001000000010000000L, bitboard & BitboardUtils.createFileMask(7));
     }
 }
