@@ -65,7 +65,7 @@ public class BitboardUtils {
         } else if ((board.whitePawns & position) > 0) {
             moves = computeWhitePawnMoves(position, board.allPieces, board.blackPieces);
         } else if ((board.blackPawns & position) > 0) {
-            moves = 0;
+            moves = computeBlackPawnMoves(position, board.allPieces, board.whitePieces);
         } else {
             moves = 0;
         }
