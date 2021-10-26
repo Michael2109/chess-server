@@ -26,7 +26,7 @@ public class Board {
     public long blackPawns;
     public long blackPieces;
 
-    private long allPieces;
+    public long allPieces;
 
     public Board() {
         resetBoard();

@@ -61,4 +61,37 @@ public class BitboardTest {
 
         // Add tests to check wont allow moves on own pieces
     }
+
+    @Test
+    public void testKnightMoves() {
+
+        Assertions.assertEquals(0b0000000000000000000000000001010000100010000000000010001000010100L, BitboardUtils.computeKnightMoves(1L << Positions.D3, 0));
+        Assertions.assertEquals(0b0000000000000000000000000000001000000100000000000000010000000010L, BitboardUtils.computeKnightMoves(1L << Positions.A3, 0));
+        Assertions.assertEquals(0b0000000000000000000000000100000000100000000000000010000001000000L, BitboardUtils.computeKnightMoves(1L << Positions.H3, 0));
+        Assertions.assertEquals(0b0000000000010001000010100000000000000000000000000000000000000000L, BitboardUtils.computeKnightMoves(1L << Positions.C8, 0));
+        Assertions.assertEquals(0b0000000000000000000000000000000000000000000010100001000100000000L, BitboardUtils.computeKnightMoves(1L << Positions.C1, 0));
+
+        // Add tests to check wont allow moves on own pieces
+    }
+
+    @Test
+    public void testWhitePawnMoves() {
+
+        // Forwards
+        Assertions.assertEquals(1L << Positions.D4, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeWhitePawnMoves(1L << Positions.D8, 0, 0));
+
+        // Blocked
+        Assertions.assertEquals(0, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3,  1L << Positions.D4, 0));
+
+        // Attack left
+        Assertions.assertEquals(0b0000000000000000000000000000000000001100000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 1L << Positions.C4));
+
+        // Attack right
+        Assertions.assertEquals(0b0000000000000000000000000000000000011000000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0,  1L << Positions.E4));
+
+        // Attack both
+        Assertions.assertEquals(0b0000000000000000000000000000000000011100000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 1L << Positions.C4 | 1L << Positions.E4));
+
+    }
 }
