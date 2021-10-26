@@ -94,4 +94,25 @@ public class BitboardTest {
         Assertions.assertEquals(0b0000000000000000000000000000000000011100000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 1L << Positions.C4 | 1L << Positions.E4));
 
     }
+
+    @Test
+    public void testBlackPawnMoves() {
+
+        // Forwards
+        Assertions.assertEquals(1L << Positions.D2, BitboardUtils.computeBlackPawnMoves(1L << Positions.D3, 0, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeBlackPawnMoves(1L << Positions.D1, 0, 0));
+
+        // Blocked
+        Assertions.assertEquals(0, BitboardUtils.computeBlackPawnMoves(1L << Positions.D3,  1L << Positions.D2, 0));
+
+        // Attack left
+        Assertions.assertEquals(0b0000000000000000000000000000000000000000000011000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.C4, 0, 1L << Positions.D3));
+
+        // Attack right
+        Assertions.assertEquals(0b0000000000000000000000000000000000000000000110000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.D4, 0,  1L << Positions.E3));
+
+        // Attack both
+        Assertions.assertEquals(0b0000000000000000000000000000000000000000000111000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.D4, 0, 1L << Positions.C3 | 1L << Positions.E3));
+
+    }
 }

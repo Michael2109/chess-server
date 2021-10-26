@@ -181,7 +181,7 @@ public class BitboardUtils {
 		filter, thereby being on rank 3, check and see if I can move forward
 		one more */
         final long black_pawn_two_steps =
-                ((black_pawn_one_step & BitboardUtils.createRowMask(2)) >> 8) & ~allPieces;
+                ((black_pawn_one_step & BitboardUtils.createRowMask(5)) >> 8) & ~allPieces;
 
 	/* the union of the movements dictate the possible moves forward
 		available */
@@ -206,6 +206,7 @@ public class BitboardUtils {
 		attack/move. */
         final long blackPawnValid = black_pawn_valid_moves | black_pawn_valid_attacks;
 
+        BitboardUtils.printBitboard(blackPawnValid);
         return blackPawnValid;
 
     }
