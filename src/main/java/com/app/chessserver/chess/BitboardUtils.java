@@ -94,7 +94,6 @@ public class BitboardUtils {
         rows.stream().forEach(row -> {
             final StringBuilder sb = new StringBuilder();
 
-            Collections.reverse(row);
             row.forEach(character -> sb.append(character));
 
             System.out.println(sb);
@@ -137,18 +136,19 @@ public class BitboardUtils {
         // 1 2 3
         // 8 K 4
         // 7 6 5
-        final long kingClipColumnH = kingPosition & createColumnClear(7);
-        final long kingClipColumnA = kingPosition & createColumnClear(0);
 
-        final long spot1 = kingClipColumnA << 7;
-        final long spot2 = kingPosition << 8;
-        final long spot3 = kingClipColumnH << 9;
-        final long spot4 = kingClipColumnH << 1;
+        final long kingClipColumnH = kingPosition & ~FILE_H;
+        final long kingClipColumnA = kingPosition & ~FILE_A;
 
-        final long spot5 = kingClipColumnH >> 7;
-        final long spot6 = kingPosition >> 8;
-        final long spot7 = kingClipColumnA >> 9;
-        final long spot8 = kingClipColumnA >> 1;
+        final long spot1 = kingClipColumnA >> 7;
+        final long spot2 = kingPosition >> 8;
+        final long spot3 = kingClipColumnH >> 9;
+        final long spot4 = kingClipColumnH >> 1;
+
+        final long spot5 = kingClipColumnH << 7;
+        final long spot6 = kingPosition << 8;
+        final long spot7 = kingClipColumnA << 9;
+        final long spot8 = kingClipColumnA << 1;
 
         final long kingMoves = spot1 | spot2 | spot3 | spot4 | spot5 | spot6 | spot7 | spot8;
 
