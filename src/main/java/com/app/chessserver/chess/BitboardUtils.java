@@ -7,6 +7,66 @@ import java.util.stream.IntStream;
 
 public class BitboardUtils {
 
+    // Ranks
+    private static final long RANK_1 = 0b0000000000000000000000000000000000000000000000000000000011111111L;
+    private static final long RANK_2 = 0b0000000000000000000000000000000000000000000000001111111100000000L;
+    private static final long RANK_3 = 0b0000000000000000000000000000000000000000111111110000000000000000L;
+    private static final long RANK_4 = 0b0000000000000000000000000000000011111111000000000000000000000000L;
+    private static final long RANK_5 = 0b0000000000000000000000001111111100000000000000000000000000000000L;
+    private static final long RANK_6 = 0b0000000000000000111111110000000000000000000000000000000000000000L;
+    private static final long RANK_7 = 0b0000000011111111000000000000000000000000000000000000000000000000L;
+    private static final long RANK_8 = 0b1111111100000000000000000000000000000000000000000000000000000000L;
+
+    // File
+    private static final long FILE_A = 0b1000000010000000100000001000000010000000100000001000000010000000L;
+    private static final long FILE_B = 0b0100000001000000010000000100000001000000010000000100000001000000L;
+    private static final long FILE_C = 0b0010000000100000001000000010000000100000001000000010000000100000L;
+    private static final long FILE_D = 0b0001000000010000000100000001000000010000000100000001000000010000L;
+    private static final long FILE_E = 0b0000100000001000000010000000100000001000000010000000100000001000L;
+    private static final long FILE_F = 0b0000010000000100000001000000010000000100000001000000010000000100L;
+    private static final long FILE_G = 0b0000001000000010000000100000001000000010000000100000001000000010L;
+    private static final long FILE_H = 0b0000000100000001000000010000000100000001000000010000000100000001L;
+
+    // Diagonals
+    private static final long DIAGONAL_0 = 0b0000000100000000000000000000000000000000000000000000000000000000L;
+    private static final long DIAGONAL_1 = 0b0000001000000001000000000000000000000000000000000000000000000000L;
+    private static final long DIAGONAL_2 = 0b0000010000000010000000010000000000000000000000000000000000000000L;
+    private static final long DIAGONAL_3 = 0b0000100000000100000000100000000100000000000000000000000000000000L;
+    private static final long DIAGONAL_4 = 0b0001000000001000000001000000001000000001000000000000000000000000L;
+    private static final long DIAGONAL_5 = 0b0010000000010000000010000000010000000010000000010000000000000000L;
+    private static final long DIAGONAL_6 = 0b0100000000100000000100000000100000000100000000100000000100000000L;
+    private static final long DIAGONAL_7 = 0b1000000001000000001000000001000000001000000001000000001000000001L;
+    private static final long DIAGONAL_8 = 0b0000000010000000010000000010000000010000000010000000010000000010L;
+    private static final long DIAGONAL_9 = 0b0000000000000000100000000100000000100000000100000000100000000100L;
+    private static final long DIAGONAL_10 = 0b0000000000000000000000001000000001000000001000000001000000001000L;
+    private static final long DIAGONAL_11 = 0b0000000000000000000000000000000010000000010000000010000000010000L;
+    private static final long DIAGONAL_12 = 0b0000000000000000000000000000000000000000100000000100000000100000L;
+    private static final long DIAGONAL_13 = 0b0000000000000000000000000000000000000000000000001000000001000000L;
+    private static final long DIAGONAL_14 = 0b0000000000000000000000000000000000000000000000000000000010000000L;
+
+    // Anti-diagonal
+    private static final long ANTI_DIAGONAL_0 = 0b1000000000000000000000000000000000000000000000000000000000000000L;
+    private static final long ANTI_DIAGONAL_1 = 0b0100000010000000000000000000000000000000000000000000000000000000L;
+    private static final long ANTI_DIAGONAL_2 = 0b0010000001000000100000000000000000000000000000000000000000000000L;
+    private static final long ANTI_DIAGONAL_3 = 0b0001000000100000010000001000000000000000000000000000000000000000L;
+    private static final long ANTI_DIAGONAL_4 = 0b0000100000010000001000000100000010000000000000000000000000000000L;
+    private static final long ANTI_DIAGONAL_5 = 0b0000010000001000000100000010000001000000100000000000000000000000L;
+    private static final long ANTI_DIAGONAL_6 = 0b0000001000000100000010000001000000100000010000001000000000000000L;
+    private static final long ANTI_DIAGONAL_7 = 0b0000000100000010000001000000100000010000001000000100000010000000L;
+    private static final long ANTI_DIAGONAL_8 = 0b0000000000000001000000100000010000001000000100000010000001000000L;
+    private static final long ANTI_DIAGONAL_9 = 0b0000000000000000000000010000001000000100000010000001000000100000L;
+    private static final long ANTI_DIAGONAL_10 = 0b0000000000000000000000000000000100000010000001000000100000010000L;
+    private static final long ANTI_DIAGONAL_11 = 0b0000000000000000000000000000000000000001000000100000010000001000L;
+    private static final long ANTI_DIAGONAL_12 = 0b0000000000000000000000000000000000000000000000010000001000000100L;
+    private static final long ANTI_DIAGONAL_13 = 0b0000000000000000000000000000000000000000000000000000000100000010L;
+    private static final long ANTI_DIAGONAL_14 = 0b0000000000000000000000000000000000000000000000000000000000000001L;
+
+    // Masks
+    private static final long[] RANK_MASK = {RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8};
+    private static final long[] FILE_MASK = {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H};
+    private static final long[] DIAGONAL_MASK = {DIAGONAL_14, DIAGONAL_13, DIAGONAL_12, DIAGONAL_11, DIAGONAL_10, DIAGONAL_9, DIAGONAL_8, DIAGONAL_7, DIAGONAL_6, DIAGONAL_5, DIAGONAL_4, DIAGONAL_3, DIAGONAL_2, DIAGONAL_1, DIAGONAL_0};
+    private static final long[] ANTI_DIAGONAL_MASK = {ANTI_DIAGONAL_14, ANTI_DIAGONAL_13, ANTI_DIAGONAL_12, ANTI_DIAGONAL_11, ANTI_DIAGONAL_10, ANTI_DIAGONAL_9, ANTI_DIAGONAL_8, ANTI_DIAGONAL_7, ANTI_DIAGONAL_6, ANTI_DIAGONAL_5, ANTI_DIAGONAL_4, ANTI_DIAGONAL_3, ANTI_DIAGONAL_2, ANTI_DIAGONAL_1, ANTI_DIAGONAL_0};
+
     // TODO Change to be multiple constants
     public static long createRowClear(final long row) {
         return ~(0b11111111L << (row * 8));
@@ -137,13 +197,13 @@ public class BitboardUtils {
         /* check the single space infront of the white pawn */
         final long white_pawn_one_step = (pawnPosition << 8) & ~allPieces;
 
-	/* for all moves that came from rank 2 (home row) and passed the above
+	    /* for all moves that came from rank 2 (home row) and passed the above
 		filter, thereby being on rank 3, check and see if I can move forward
 		one more */
         final long white_pawn_two_steps =
                 ((white_pawn_one_step & BitboardUtils.createRowMask(2)) << 8) & ~allPieces;
 
-	/* the union of the movements dictate the possible moves forward
+	    /* the union of the movements dictate the possible moves forward
 		available */
         final long white_pawn_valid_moves = white_pawn_one_step | white_pawn_two_steps;
 
@@ -162,7 +222,7 @@ public class BitboardUtils {
         /* Calculate where I can _actually_ attack something */
         final long white_pawn_valid_attacks = white_pawn_attacks & blackPieces;
 
-	/* then we combine the two situations in which a white pawn can legally
+	    /* then we combine the two situations in which a white pawn can legally
 		attack/move. */
         final long WhitePawnValid = white_pawn_valid_moves | white_pawn_valid_attacks;
 
@@ -177,13 +237,13 @@ public class BitboardUtils {
         /* check the single space infront of the black pawn */
         final long black_pawn_one_step = (pawnPosition >> 8) & ~allPieces;
 
-	/* for all moves that came from rank 2 (home row) and passed the above
+	    /* for all moves that came from rank 2 (home row) and passed the above
 		filter, thereby being on rank 3, check and see if I can move forward
 		one more */
         final long black_pawn_two_steps =
                 ((black_pawn_one_step & BitboardUtils.createRowMask(5)) >> 8) & ~allPieces;
 
-	/* the union of the movements dictate the possible moves forward
+	    /* the union of the movements dictate the possible moves forward
 		available */
         final long black_pawn_valid_moves = black_pawn_one_step | black_pawn_two_steps;
 
@@ -195,20 +255,57 @@ public class BitboardUtils {
         /* then check the right side of the pawn, minding the overflow File H */
         final long black_pawn_right_attack = (pawnPosition & BitboardUtils.createColumnClear(7)) >> 9;
 
-	/* the union of the left and right attacks together make up all the
+	    /* the union of the left and right attacks together make up all the
 		possible attacks */
         final long black_pawn_attacks = black_pawn_left_attack | black_pawn_right_attack;
 
         /* Calculate where I can _actually_ attack something */
         final long black_pawn_valid_attacks = black_pawn_attacks & whitePieces;
 
-	/* then we combine the two situations in which a black pawn can legally
+	    /* then we combine the two situations in which a black pawn can legally
 		attack/move. */
         final long blackPawnValid = black_pawn_valid_moves | black_pawn_valid_attacks;
 
         BitboardUtils.printBitboard(blackPawnValid);
         return blackPawnValid;
 
+    }
+/*
+    public static long computeRookMoves(final long rookPosition, final long ownPieces, final long enemyPieces) {
+        //  global rankmask, filemask
+        final int ranknum = (int)rookPosition / 8;
+        final int filenum = (int)(7 - rookPosition % 8);
+        final long slider = 1 << rookPosition;
+        final long horizontal = ((occupied - 2L * slider) ^ reverseBits(reverseBits(occupied) - 2 * reverseBits(slider))) & FILE_MASK[ranknum];
+        final long vertical = (((occupied & FILE_MASK[filenum]) - 2 * slider) ^ reverseBits(reverseBits(occupied & FILE_MASK[filenum]) - 2 * reverseBits(slider))) & FILE_MASK[filenum];
+
+        printBitboard(vertical ^ horizontal);
+        return vertical ^ horizontal;
+    }
+
+    public static long computeBishopMoves(final long rookPosition, final long ownPieces, final long enemyPieces) {
+        //  global rankmask, filemask
+        final int ranknum = (int)rookPosition / 8;
+        final int filenum = (int)(7 - rookPosition % 8);
+        final long slider = 1 << rookPosition;
+        final long horizontal = ((occupied - 2L * slider) ^ reverseBits(reverseBits(occupied) - 2 * reverseBits(slider))) & FILE_MASK[ranknum];
+        final long vertical = (((occupied & FILE_MASK[filenum]) - 2 * slider) ^ reverseBits(reverseBits(occupied & FILE_MASK[filenum]) - 2 * reverseBits(slider))) & FILE_MASK[filenum];
+
+        printBitboard(vertical ^ horizontal);
+        return vertical ^ horizontal;
+    }*/
+
+    private static long reverseBits(final long x)
+    {
+        long original = x;
+        long b = 0;
+        while (original != 0)
+        {
+            b <<= 1;
+            b |= ( x & 1);
+            original >>= 1;
+        }
+        return b;
     }
 
 
