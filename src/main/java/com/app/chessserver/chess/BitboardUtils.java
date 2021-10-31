@@ -143,7 +143,7 @@ public class BitboardUtils {
 
     private static int calculateScore(final long pieces){
        // Arrays.stream(getAllPositions()).map(position -> pieces)
-        return null;
+        return -1;
     }
 
     private static long[] getAllPositions() {
