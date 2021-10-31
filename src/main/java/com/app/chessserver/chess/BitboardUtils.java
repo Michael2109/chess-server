@@ -1,5 +1,6 @@
 package com.app.chessserver.chess;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -138,6 +139,29 @@ public class BitboardUtils {
         }
 
         return moves;
+    }
+
+    private static int calculateScore(final long pieces){
+       // Arrays.stream(getAllPositions()).map(position -> pieces)
+        return null;
+    }
+
+    private static long[] getAllPositions() {
+        long currentPosition = 1L;
+        final long[] allPositions = new long[64];
+        allPositions[0] = currentPosition;
+        for (int i = 1; i < 64; i++) {
+            currentPosition = currentPosition << 1;
+            allPositions[i] = currentPosition;
+        }
+        return allPositions;
+    }
+    private static void findBestMove(final Board board){
+
+        Arrays.stream(getAllPositions()).forEach(position -> {
+            final long moves = getValidMoves(board, position);
+
+        });
     }
 
     public static long computeKingMoves(final long kingPosition, final long ownPieces) {
