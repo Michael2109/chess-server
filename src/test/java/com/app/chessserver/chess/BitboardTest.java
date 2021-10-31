@@ -115,4 +115,13 @@ public class BitboardTest {
         Assertions.assertEquals(0b0000000000000000000000000000000000000000000111000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.D4, 0, 1L << Positions.C3 | 1L << Positions.E3));
 
     }
+
+
+    @Test
+    public void testRookMoves() {
+
+        // Up
+        Assertions.assertEquals(1L << Positions.D2, BitboardUtils.computeRookMoves(1L << Positions.D3, 0, 0));
+
+    }
 }

@@ -1,6 +1,5 @@
 package com.app.chessserver.chess;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -270,19 +269,88 @@ public class BitboardUtils {
         return blackPawnValid;
 
     }
-/*
+
     public static long computeRookMoves(final long rookPosition, final long ownPieces, final long enemyPieces) {
-        //  global rankmask, filemask
-        final int ranknum = (int)rookPosition / 8;
-        final int filenum = (int)(7 - rookPosition % 8);
-        final long slider = 1 << rookPosition;
-        final long horizontal = ((occupied - 2L * slider) ^ reverseBits(reverseBits(occupied) - 2 * reverseBits(slider))) & FILE_MASK[ranknum];
-        final long vertical = (((occupied & FILE_MASK[filenum]) - 2 * slider) ^ reverseBits(reverseBits(occupied & FILE_MASK[filenum]) - 2 * reverseBits(slider))) & FILE_MASK[filenum];
 
-        printBitboard(vertical ^ horizontal);
-        return vertical ^ horizontal;
-    }
+        if(rookPosition> 0) {
+            // Move the rook up
+            long allowedMoves = 0;
 
+            long currentPosition = 1L;
+            long rank = 0;
+            while ((rookPosition & currentPosition) == 0) {
+                currentPosition = currentPosition << 1;
+                rank++;
+            }
+            rank /= 8;
+
+            currentPosition = 1L;
+            long file = 0;
+            while ((rookPosition & currentPosition) == 0) {
+                currentPosition = currentPosition << 1;
+                file++;
+            }
+            file %= 8;
+
+            // Up
+            for (long i = rank+1; i < 8; i++) {
+                final long upPosition = rookPosition << ((i - rank) * 8);
+                if ((upPosition & ownPieces) > 0) {
+                    break;
+                } else if ((upPosition & enemyPieces) > 0) {
+                    allowedMoves |= upPosition;
+                    break;
+                } else {
+                    allowedMoves |= upPosition;
+                }
+            }
+
+            // Down
+            for (long i = rank-1; i >=0; i--) {
+                final long downPosition = rookPosition >>> ((rank - i) * 8);
+                if ((downPosition & ownPieces) > 0) {
+                    break;
+                } else if ((downPosition & enemyPieces) > 0) {
+                    allowedMoves |= downPosition;
+                    break;
+                } else {
+                    allowedMoves |= downPosition;
+                }
+            }
+
+            // Left
+            for (long i = file+1; i < 8; i++) {
+                final long rightPosition = rookPosition << i - file;
+                if ((rightPosition & ownPieces) > 0) {
+                    break;
+                } else if ((rightPosition & enemyPieces) > 0) {
+                    allowedMoves |= rightPosition;
+                    break;
+                } else {
+                    allowedMoves |= rightPosition;
+                }
+            }
+
+            // Right
+            for (long i = file-1; i >=0; i--) {
+                final long rightPosition = rookPosition >>> file - i;
+                if ((rightPosition & ownPieces) > 0) {
+                    break;
+                } else if ((rightPosition & enemyPieces) > 0) {
+                    allowedMoves |= rightPosition;
+                    break;
+                } else {
+                    allowedMoves |= rightPosition;
+                }
+            }
+
+            printBitboard(allowedMoves);
+            return allowedMoves;
+        }else {
+            return 0;
+        }
+        }
+/*
     public static long computeBishopMoves(final long rookPosition, final long ownPieces, final long enemyPieces) {
         //  global rankmask, filemask
         final int ranknum = (int)rookPosition / 8;
@@ -295,14 +363,12 @@ public class BitboardUtils {
         return vertical ^ horizontal;
     }*/
 
-    private static long reverseBits(final long x)
-    {
+    private static long reverseBits(final long x) {
         long original = x;
         long b = 0;
-        while (original != 0)
-        {
+        while (original != 0) {
             b <<= 1;
-            b |= ( x & 1);
+            b |= (x & 1);
             original >>= 1;
         }
         return b;
