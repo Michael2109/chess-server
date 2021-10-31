@@ -82,13 +82,13 @@ public class BitboardTest {
         Assertions.assertEquals(0, BitboardUtils.computeWhitePawnMoves(1L << Positions.D8, 0, 0));
 
         // Blocked
-        Assertions.assertEquals(0, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3,  1L << Positions.D4, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 1L << Positions.D4, 0));
 
         // Attack left
         Assertions.assertEquals(0b0000000000000000000000000000000000001100000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 1L << Positions.C4));
 
         // Attack right
-        Assertions.assertEquals(0b0000000000000000000000000000000000011000000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0,  1L << Positions.E4));
+        Assertions.assertEquals(0b0000000000000000000000000000000000011000000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 1L << Positions.E4));
 
         // Attack both
         Assertions.assertEquals(0b0000000000000000000000000000000000011100000000000000000000000000L, BitboardUtils.computeWhitePawnMoves(1L << Positions.D3, 0, 1L << Positions.C4 | 1L << Positions.E4));
@@ -103,25 +103,39 @@ public class BitboardTest {
         Assertions.assertEquals(0, BitboardUtils.computeBlackPawnMoves(1L << Positions.D1, 0, 0));
 
         // Blocked
-        Assertions.assertEquals(0, BitboardUtils.computeBlackPawnMoves(1L << Positions.D3,  1L << Positions.D2, 0));
+        Assertions.assertEquals(0, BitboardUtils.computeBlackPawnMoves(1L << Positions.D3, 1L << Positions.D2, 0));
 
         // Attack left
         Assertions.assertEquals(0b0000000000000000000000000000000000000000000011000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.C4, 0, 1L << Positions.D3));
 
         // Attack right
-        Assertions.assertEquals(0b0000000000000000000000000000000000000000000110000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.D4, 0,  1L << Positions.E3));
+        Assertions.assertEquals(0b0000000000000000000000000000000000000000000110000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.D4, 0, 1L << Positions.E3));
 
         // Attack both
         Assertions.assertEquals(0b0000000000000000000000000000000000000000000111000000000000000000L, BitboardUtils.computeBlackPawnMoves(1L << Positions.D4, 0, 1L << Positions.C3 | 1L << Positions.E3));
 
     }
 
-
     @Test
     public void testRookMoves() {
 
-        // Up
-        Assertions.assertEquals(1L << Positions.D2, BitboardUtils.computeRookMoves(1L << Positions.D3, 0, 0));
+        Assertions.assertEquals(0b0000100000001000000010000000100000001000111101110000100000001000L, BitboardUtils.computeRookMoves(1L << Positions.D3, 0, 0));
+        Assertions.assertEquals(0b0000000100000001000000010000000100000001000000010000000111111110L, BitboardUtils.computeRookMoves(1L << Positions.A1, 0, 0));
+        Assertions.assertEquals(0b1111111000000001000000010000000100000001000000010000000100000001L, BitboardUtils.computeRookMoves(1L << Positions.A8, 0, 0));
+        Assertions.assertEquals(0b0111111110000000100000001000000010000000100000001000000010000000L, BitboardUtils.computeRookMoves(1L << Positions.H8, 0, 0));
+        Assertions.assertEquals(0b1000000010000000100000001000000010000000100000001000000001111111L, BitboardUtils.computeRookMoves(1L << Positions.H1, 0, 0));
+
+    }
+
+    @Test
+    public void testBishopMoves() {
+
+        Assertions.assertEquals(0b0000100000001000000010000000100000001000111101110000100000001000L, BitboardUtils.computeBishopMoves(1L << Positions.D6, 0, 0));
+        Assertions.assertEquals(0b0000100000001000000010000000100000001000111101110000100000001000L, BitboardUtils.computeBishopMoves(1L << Positions.D3, 0, 0));
+        Assertions.assertEquals(0b0000000100000001000000010000000100000001000000010000000111111110L, BitboardUtils.computeBishopMoves(1L << Positions.A1, 0, 0));
+        Assertions.assertEquals(0b1111111000000001000000010000000100000001000000010000000100000001L, BitboardUtils.computeBishopMoves(1L << Positions.A8, 0, 0));
+        Assertions.assertEquals(0b0111111110000000100000001000000010000000100000001000000010000000L, BitboardUtils.computeBishopMoves(1L << Positions.H8, 0, 0));
+        Assertions.assertEquals(0b1000000010000000100000001000000010000000100000001000000001111111L, BitboardUtils.computeBishopMoves(1L << Positions.H1, 0, 0));
 
     }
 }

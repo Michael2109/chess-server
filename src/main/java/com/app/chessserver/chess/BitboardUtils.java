@@ -1,5 +1,6 @@
 package com.app.chessserver.chess;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -92,7 +93,7 @@ public class BitboardUtils {
 
         rows.stream().forEach(row -> {
             final StringBuilder sb = new StringBuilder();
-
+            Collections.reverse(row);
             row.forEach(character -> sb.append(character));
 
             System.out.println(sb);
@@ -124,6 +125,14 @@ public class BitboardUtils {
             moves = computeWhitePawnMoves(position, board.allPieces, board.blackPieces);
         } else if ((board.blackPawns & position) > 0) {
             moves = computeBlackPawnMoves(position, board.allPieces, board.whitePieces);
+        } else if ((board.whiteRooks & position) > 0) {
+            moves = computeRookMoves(position, board.allPieces, board.blackPieces);
+        } else if ((board.blackRooks & position) > 0) {
+            moves = computeRookMoves(position, board.allPieces, board.whitePieces);
+        } else if ((board.whiteBishops & position) > 0) {
+            moves = computeBishopMoves(position, board.allPieces, board.blackPieces);
+        } else if ((board.blackBishops & position) > 0) {
+            moves = computeBishopMoves(position, board.allPieces, board.whitePieces);
         } else {
             moves = 0;
         }
@@ -272,28 +281,16 @@ public class BitboardUtils {
 
     public static long computeRookMoves(final long rookPosition, final long ownPieces, final long enemyPieces) {
 
-        if(rookPosition> 0) {
+        // TODO Temporary solution to check for H8 as H8 represents whether negative
+        if (rookPosition > 0 || (rookPosition >> 1 != 0)) {
             // Move the rook up
             long allowedMoves = 0;
 
-            long currentPosition = 1L;
-            long rank = 0;
-            while ((rookPosition & currentPosition) == 0) {
-                currentPosition = currentPosition << 1;
-                rank++;
-            }
-            rank /= 8;
-
-            currentPosition = 1L;
-            long file = 0;
-            while ((rookPosition & currentPosition) == 0) {
-                currentPosition = currentPosition << 1;
-                file++;
-            }
-            file %= 8;
+            final long rank = getRank(rookPosition);
+            final long file = getFile(rookPosition);
 
             // Up
-            for (long i = rank+1; i < 8; i++) {
+            for (long i = rank + 1; i < 8; i++) {
                 final long upPosition = rookPosition << ((i - rank) * 8);
                 if ((upPosition & ownPieces) > 0) {
                     break;
@@ -306,7 +303,7 @@ public class BitboardUtils {
             }
 
             // Down
-            for (long i = rank-1; i >=0; i--) {
+            for (long i = rank - 1; i >= 0; i--) {
                 final long downPosition = rookPosition >>> ((rank - i) * 8);
                 if ((downPosition & ownPieces) > 0) {
                     break;
@@ -318,8 +315,8 @@ public class BitboardUtils {
                 }
             }
 
-            // Left
-            for (long i = file+1; i < 8; i++) {
+            // Right
+            for (long i = file + 1; i < 8; i++) {
                 final long rightPosition = rookPosition << i - file;
                 if ((rightPosition & ownPieces) > 0) {
                     break;
@@ -331,8 +328,8 @@ public class BitboardUtils {
                 }
             }
 
-            // Right
-            for (long i = file-1; i >=0; i--) {
+            // Left
+            for (long i = file - 1; i >= 0; i--) {
                 final long rightPosition = rookPosition >>> file - i;
                 if ((rightPosition & ownPieces) > 0) {
                     break;
@@ -346,10 +343,106 @@ public class BitboardUtils {
 
             printBitboard(allowedMoves);
             return allowedMoves;
-        }else {
+        } else {
             return 0;
         }
+    }
+
+
+    public static long computeBishopMoves(final long bishopPosition, final long ownPieces, final long enemyPieces) {
+
+        // TODO Temporary solution to check for H8 as H8 represents whether negative
+        if (bishopPosition > 0 || (bishopPosition >> 1 != 0)) {
+            // Move the rook up
+            long allowedMoves = 0;
+
+            final long rank = getRank(bishopPosition);
+            final long file = getFile(bishopPosition);
+
+            // Up-left
+            for (long i = rank + 1; i < 8; i++) {
+                System.out.println(file - i);
+                final long upRightPosition = bishopPosition << (((i - rank) * 8) - (i - rank));
+                if ((upRightPosition & ownPieces) > 0) {
+                    break;
+                } else if ((upRightPosition & enemyPieces) > 0) {
+                    allowedMoves |= upRightPosition;
+                    break;
+                } else {
+                    allowedMoves |= upRightPosition;
+                }
+            }
+
+            // Up-right
+            for (long i = rank + 1; i < 8 && i - file >= 0; i++) {
+
+                final long upRightPosition = bishopPosition << (((i - rank) * 8) + (i - rank));
+                if ((upRightPosition & ownPieces) > 0) {
+                    break;
+                } else if ((upRightPosition & enemyPieces) > 0) {
+                    allowedMoves |= upRightPosition;
+                    break;
+                } else {
+                    allowedMoves |= upRightPosition;
+                }
+            }
+
+            // Down-left
+            for (long i = rank - 1; i >= 0 && 1 + i - file >= 0; i--) {
+                final long downPosition = bishopPosition >>> ((rank - i) * 8) + (rank - i);
+                if ((downPosition & ownPieces) > 0) {
+                    break;
+                } else if ((downPosition & enemyPieces) > 0) {
+                    allowedMoves |= downPosition;
+                    break;
+                } else {
+                    allowedMoves |= downPosition;
+                }
+            }
+
+            // Down-right
+            for (long i = rank - 1; i >= 0 && 2 + i - file >= 0; i--) {
+
+                final long downPosition = bishopPosition >>> ((rank - i) * 8) - (rank - i);
+                if ((downPosition & ownPieces) > 0) {
+                    break;
+                } else if ((downPosition & enemyPieces) > 0) {
+                    allowedMoves |= downPosition;
+                    break;
+                } else {
+                    allowedMoves |= downPosition;
+                }
+            }
+
+            printBitboard(allowedMoves);
+            return allowedMoves;
+        } else {
+            return 0;
         }
+    }
+
+    private static long getFile(final long position) {
+
+        long currentPosition = 1L;
+        long file = 0;
+        while ((position & currentPosition) == 0) {
+            currentPosition = currentPosition << 1;
+            file++;
+        }
+        file %= 8;
+        return file;
+    }
+
+    private static long getRank(final long position) {
+        long currentPosition = 1L;
+        long rank = 0;
+        while ((position & currentPosition) == 0) {
+            currentPosition = currentPosition << 1;
+            rank++;
+        }
+        rank /= 8;
+        return rank;
+    }
 /*
     public static long computeBishopMoves(final long rookPosition, final long ownPieces, final long enemyPieces) {
         //  global rankmask, filemask
